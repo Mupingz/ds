@@ -1,25 +1,32 @@
-function doSomeThing(n: number) {
-    console.log('assume we do something that takes a long time')
-    return n + n;
+let count = 0
+function recursiveFibonacci(n: number): number {
+    count++
+    if (n < 2)
+        return n
+    return recursiveFibonacci(n - 1) + recursiveFibonacci(n - 2)
 }
-doSomeThing(20)
-doSomeThing(20) 
-doSomeThing(20) 
 
-interface NumberArray {
-    [index: number]: number;
+function iterativeFibonacci(n: number): number {
+    let arr = [0, 1]
+    for (let i = 2; i <= n; i++) {
+        count++
+        let fibo = arr[i - 1] + arr[i - 2]
+        arr.push(fibo)
+    }
+    return arr[n]
 }
-let cache: NumberArray = {}
-function memoizedDoSomeThing(n: number) {
-    if (n in cache) {
-        console.log('---------cache---------')
+function dynamicFibonacci() {
+    interface NumberArray {
+        [index: number]: number;
+    }
+    let cache: NumberArray = {}
+    return function fibonacci(n: number): number {
+        count++
+        if ((n in cache) === false) {
+            if (n < 2)
+                return n
+            cache[n] = fibonacci(n - 1) + fibonacci(n - 2)
+        }
         return cache[n]
     }
-    console.log('assume we do something that takes a long time')
-    const result = n + n
-    cache[n] = result
-    return result
 }
-memoizedDoSomeThing(20)
-memoizedDoSomeThing(20)
-memoizedDoSomeThing(20) 
